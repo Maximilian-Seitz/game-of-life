@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bi7l8chehumh0"
+path="res://.godot/imported/GameOfLife.glsl-16b51f4e7cea67193f92dfc5cdf0343f.res"
+
+[deps]
+
+source_file="res://Systems/GameOfLife/ComputeShader/GameOfLife.glsl"
+dest_files=["res://.godot/imported/GameOfLife.glsl-16b51f4e7cea67193f92dfc5cdf0343f.res"]
+
+[params]
+

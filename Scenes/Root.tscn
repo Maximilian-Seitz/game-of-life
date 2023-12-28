@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr0oe5ieu7in3"]
+
+[ext_resource type="Script" path="res://Systems/GameOfLife/GameOfLife.gd" id="1_cnarf"]
+[ext_resource type="Script" path="res://Systems/GameOfLife/ComputeShader/GameOfLifeComputer.gd" id="2_656x6"]
+[ext_resource type="RDShaderFile" uid="uid://bi7l8chehumh0" path="res://Systems/GameOfLife/ComputeShader/GameOfLife.glsl" id="3_r6n68"]
+[ext_resource type="Material" uid="uid://dkrplcswhegh4" path="res://Visuals/grid_material.tres" id="4_7b5kg"]
+[ext_resource type="Script" path="res://Visuals/highlighter.gd" id="5_0nlwv"]
+
+[sub_resource type="Resource" id="Resource_kb1b7"]
+script = ExtResource("2_656x6")
+shader_file = ExtResource("3_r6n68")
+
+[node name="Root" type="Node"]
+
+[node name="GameOfLife" type="Node2D" parent="."]
+script = ExtResource("1_cnarf")
+computer = SubResource("Resource_kb1b7")
+field_material = ExtResource("4_7b5kg")
+
+[node name="Highlighter" type="Node" parent="." node_paths=PackedStringArray("game")]
+script = ExtResource("5_0nlwv")
+game = NodePath("../GameOfLife")
+grid_material = ExtResource("4_7b5kg")
+
+[node name="UpdateTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -73.0
+offset_top = -40.0
+offset_bottom = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Paused"
+
+[node name="UpdateButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Step"
+
+[connection signal="timeout" from="UpdateTimer" to="GameOfLife" method="run_computer"]
+[connection signal="toggled" from="CanvasLayer/MarginContainer/VBoxContainer/CheckButton" to="UpdateTimer" method="set_paused"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/UpdateButton" to="GameOfLife" method="run_computer"]
